@@ -3,8 +3,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from app.routes import users_router,auth_router
+from app.helpers.config import settings
 app = FastAPI()
 
+
+allowed_origins = settings.APP_ORIGIN.split(',')
+origins = []
+origins.extend(allowed_origins)
 
 @app.get("/")
 async def root():
@@ -14,7 +19,7 @@ async def root():
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Add your frontend URL
+    allow_origins=origins,  # Add your frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
